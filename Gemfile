@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 gem 'sinatra'
+gem 'jasmine'
 gem 'sinatra-contrib'
 gem 'sinatra-websocket'
 gem 'thin', '1.6.2'
