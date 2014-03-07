@@ -1,25 +1,16 @@
 Autocompleter = function(){
-  // Trie mode:
-  // this.data = new Trie();
-
-  // Array mode:
-  this.data = [];
+  this.data = new Trie();
+  // this.data = [];
 };
 
 Autocompleter.prototype.complete = function(prefix){
-  // Trie mode:
-  // return this.data.autoComplete(prefix);
-
-  // Array mode:
-  return this.data.filter(function(str){
-     return str.substring(0,prefix.length).toLowerCase() === prefix;
-  });
+  return this.data.autoComplete(prefix);
+  // return this.data.filter(function(str){
+  //    return str.substring(0,prefix.length).toLowerCase() === prefix;
+  // });
 };
 
 Autocompleter.prototype.add = function(word){
-  // Trie mode:
-  // this.data.learn(word);
-
-  // Array mode:
-  this.data.push(word);
+  this.data.learn(word);
+  // this.data.push(word);
 };
