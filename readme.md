@@ -38,6 +38,13 @@ I've provided fairly comprehensive specs which you can run with `rake jasmine`.
 
 The full dataset, not included here, is about 70MB and 4 million lines.
 
+## Bonus:
+
+* Paginate the autocompleter results.
+* Modify your Trie to only create nodes at branches.  Example: ![Trie Diagram](320px-Patricia_trie.svg.png)
+
+I have a spec for this compressed trie behavior here: [https://gist.github.com/rsofaer/9418331](https://gist.github.com/rsofaer/9418331)
+
 ## Resources:
 
 http://en.wikipedia.org/wiki/Trie
