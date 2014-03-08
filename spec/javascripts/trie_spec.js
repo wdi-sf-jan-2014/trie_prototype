@@ -51,6 +51,13 @@ describe("Trie", function() {
         t.learn("begin");
         expect(t.find("b")).toEqual(t.characters.b);
       });
+      it("returns the last node for a prefix", function(){
+        // Thanks to Nikki Anderson and Stephanie Daffara
+        t.learn("begin");
+        t.learn("began");
+        var ending = t.characters.b.characters.e.characters.g;
+        expect(t.find("beg")).toEqual(ending);
+      });
     });
 
     describe(".getWords", function(){
@@ -70,6 +77,13 @@ describe("Trie", function() {
       });
       it("returns an empty array if there are no words", function(){
         expect(t.getWords()).toEqual([]);
+      });
+      it("returns multiple children on different branches", function(){
+        // Thanks to Stu Stein.
+        t.learn("begin");
+        t.learn("best");
+        expect(t.getWords()
+          ).toEqual(["begin", "best"]);
       });
     });
     describe(".autoComplete", function(){
