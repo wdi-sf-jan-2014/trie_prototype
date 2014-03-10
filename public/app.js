@@ -6,24 +6,9 @@ window.App = {
   initialize: function() {
     App.autocompleter = new Autocompleter();
 
-    var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
-    var searchInterval;
-    ws.onopen = function(){
-      var running_search = false;
-      var timer = function(){
-        if(!running_search && q){
-          running_search = true;
-          view.search(q);
-          running_search = false;
-        }
-      };
-      searchInterval = setInterval(timer,50);
-    };
-    ws.onmessage = function(m) {
+    App.ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
+    App.ws.onmessage = function(m) {
       App.autocompleter.add(m.data);
-    };
-    ws.onclose = function(){
-      clearInterval(searchInterval);
     };
     this.router = new this.Routers.Main();
     Backbone.history.start({pushState: true});
@@ -42,6 +27,26 @@ App.Routers.Main = Backbone.Router.extend({
   index: function(q){
     var view = new App.Views.Main({ model: {q: q} });
     $('body').html(view.render().el);
+
+    if(q && q !== ''){
+      var searchInterval;
+      App.ws.onopen = function(){
+        var running_search = false;
+        var timer = function(){
+          if(!running_search && view.$('#search').val() === q){
+            running_search = true;
+            view.search(q);
+            running_search = false;
+          }
+        };
+        searchInterval = setInterval(timer,50);
+      };
+
+      App.ws.onclose = function(){
+        clearInterval(searchInterval);
+        console.log("Done loading.");
+      };
+    }
 
   }
 });

@@ -1,4 +1,4 @@
-Trie = function(){
+NiceTrie = function(){
 };
 
 var commonPrefixLength = function(str1, str2){
@@ -11,20 +11,20 @@ var commonPrefixLength = function(str1, str2){
   return i;
 };
 
-Trie.prototype.bumpChildForward = function(childName, prefix){
+NiceTrie.prototype.bumpChildForward = function(childName, prefix){
   // Take the found child off of its current stem
   var child = this.children[childName];
   delete this.children[childName];
 
   // And put it one node further away.
-  var newChild = new Trie();
+  var newChild = new NiceTrie();
   this.children[prefix] = newChild;
   newChild.children = {};
   var remnantPrefix = childName.substring(prefix.length, childName.length);
   newChild.children[remnantPrefix] = child;
 };
 
-Trie.prototype.learn = function(word, startIndex){
+NiceTrie.prototype.learn = function(word, startIndex){
   startIndex = startIndex || 0;
   if(startIndex === word.length){
     this.isWord = true;  
@@ -33,7 +33,9 @@ Trie.prototype.learn = function(word, startIndex){
     this.children = this.children ||  {};
 
     var stem;
-    for(var str in this.children){
+    var keys = Object.keys(this.children);
+    for(var i = 0; i < keys.length; i++){
+      var str = keys[i];
       // For each child, check if word and str start the same way
       var l = commonPrefixLength(str, word.substring(startIndex));
       if(l > 0){
@@ -50,13 +52,16 @@ Trie.prototype.learn = function(word, startIndex){
       stem = word.substring(startIndex, word.length);
     }
 
-    this.children[stem] = this.children[stem] || new Trie();
+    if(this.children[stem]=== undefined || 
+        !this.children.hasOwnProperty(stem)){
+      this.children[stem] = new NiceTrie();
+    }
     this.children[stem].learn(word, startIndex + stem.length);
   }
   return this;
 };
 
-Trie.prototype.getWords = function(words, currentWord){
+NiceTrie.prototype.getWords = function(words, currentWord){
   currentWord = currentWord || "";
   words = words || [];
 
@@ -73,7 +78,7 @@ Trie.prototype.getWords = function(words, currentWord){
   return words;
 };
 
-Trie.prototype.find = function(word){
+NiceTrie.prototype.find = function(word){
   if(word === ""){
     return {node: this, path: ""};
   }
@@ -96,7 +101,7 @@ Trie.prototype.find = function(word){
   return null;
 };
 
-Trie.prototype.autoComplete = function(currentWord){
+NiceTrie.prototype.autoComplete = function(currentWord){
   var result = this.find(currentWord);
   
   if(result){

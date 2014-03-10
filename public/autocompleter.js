@@ -1,5 +1,5 @@
 Autocompleter = function(){
-  this.data = new Trie();
+  this.data = new NiceTrie();
   // this.data = [];
 };
 

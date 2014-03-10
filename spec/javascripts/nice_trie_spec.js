@@ -1,13 +1,12 @@
 describe("NiceTrie", function() {
-  return;
   it("can be initialized", function() {
-    var t = new Trie();
+    var t = new NiceTrie();
   });
 
   describe("with a trie", function(){
     var t;
     beforeEach(function() {
-      t = new Trie();
+      t = new NiceTrie();
     });
 
     it("can learn a word", function(){
@@ -59,6 +58,11 @@ describe("NiceTrie", function() {
         expect(beginner.isWord).toBeTruthy();
         expect(t.children.beginner).toBeUndefined();
       });
+
+      it("can learn the word constructor", function(){
+        t.learn("constructor");
+        expect(t.children.constructor.constructor).toEqual(t.constructor);
+      });
     });
 
     describe(".find", function(){
@@ -87,6 +91,13 @@ describe("NiceTrie", function() {
         expect(result.node.children.ner).toBeDefined();
         expect(result.path).toEqual("begin");
       });
+      it("can find the word constructor", function(){
+        t.learn("constructor");
+        expect(t.find("constructor").node).toEqual(t.children.constructor);
+      });
+      it("doesn't imagine the word constructor", function(){
+        expect(t.find("constructor")).toBeFalsy();
+      });
     });
 
     describe(".getWords", function(){
@@ -113,6 +124,10 @@ describe("NiceTrie", function() {
       });
       it("returns an empty array if there are no words", function(){
         expect(t.getWords()).toEqual([]);
+      });
+      it("can get the word constructor", function(){
+        t.learn("constructor");
+        expect(t.getWords()).toEqual(["constructor"]);
       });
     });
     describe(".autoComplete", function(){
