@@ -66,7 +66,17 @@ App.Views.Main = Backbone.View.extend({
       this.search(event.target.value);
   },
   search: function(q){
+    Backbone.history.navigate(q);
     $('#results').remove();
+
+    // A good optimization here would be to change the
+    // autocompleter.complete function to take a function
+    // as a parameter.
+    // That function would tell the autocompleter what to do 
+    // with each result of the completion search.
+    // In this way, we avoid building a giant array of all the results.
+    // This would make those sluggish single-letter searches faster.
+
     var completions = App.autocompleter.complete(q);
 
     var view = new App.Views.Results({collection: completions});
